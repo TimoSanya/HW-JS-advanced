@@ -10,6 +10,7 @@ function addNewText(){
         const div = document.createElement('div');
         div.append(document.createTextNode(text));
         div.style.margin = '4px 8px'
+
         const button = document.createElement('button')
         button.style.margin = "0 8px"
         const buttonText = document.createTextNode('X');

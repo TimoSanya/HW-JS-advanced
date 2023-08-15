@@ -1,12 +1,14 @@
 const persons = [];
-//click Add person => add unique person to array persons and add person to
-//ordered list id="personsList"
 
-//click Get stats => add after <h2>Stats</h2>: average age, min age, max age
 const statistic = document.getElementById('stats')
 const personsList= document.getElementById("personsList");
 const addBtn= document.getElementById("addPerson");
 const calcBtn= document.getElementById("calcStats");
+
+const personId = document.getElementById("personId");
+const personFirstName = document.getElementById("firstName");
+const personLastName = document.getElementById("lastName");
+const personAge = document.getElementById("age");
 
 addBtn.onclick = addPerson;
 calcBtn.onclick = calcStats;
@@ -20,10 +22,17 @@ function Person(id, firstName, lastName, age){
 
 function addPerson() {
 
-    const personId = document.getElementById("personId");
-    const personFirstName = document.getElementById("firstName");
-    const personLastName = document.getElementById("lastName");
-    const personAge = document.getElementById("age");
+
+
+    let text = personFirstName.value;
+    let pattern = /[a-z, A-Z]/g;
+    if(text.match(pattern))
+    {
+        alert("!!!!")
+    }
+
+
+
 
     const index = findPersonId(persons, personId.value)
     if (index === -1) {
@@ -34,18 +43,37 @@ function addPerson() {
             personAge.value
         )
 
+    const ListOfPersons = document.createElement("li");
+    ListOfPersons.innerHTML =  `ID: ${person.id} Name: ${person.firstName},
+    Last name: ${person.lastName}, Age: ${person.age}`;
 
-        const ListOfPersons = document.createElement("li");
-        ListOfPersons.innerHTML =  `ID: ${person.id} Name: ${person.firstName},
-        Last name: ${person.lastName}, Age: ${person.age}`;
-
+    const errorMessage =  validatePerson();
+    if (errorMessage !== "") {
+        alert(errorMessage);
+    } else {
         personsList.appendChild(ListOfPersons);
         persons.push(person);
+    }
 
     } else {
         alert("Person with this ID already exist!");
     }
+}
 
+function validatePerson() {
+    let errorMessage = "";
+    
+    if(personId.value.length === 0)
+        errorMessage = "Please fill the ID"
+    else if (personFirstName.value.length === 0)
+        errorMessage = "Please fill the First name";
+    else if (personLastName.value.length === 0)
+        errorMessage = "Please fill the Last name";
+    else if(personAge.value.length === 0)
+        errorMessage = "Please fill the age";
+
+
+    return errorMessage;
 }
 
 
@@ -84,4 +112,6 @@ function calcStats() {
     ages.innerHTML = `Min age: ${minAge} Max age: ${maxAge} Average age: ${aveAge}`
     statistic.appendChild(ages);
 }
+
+
 
