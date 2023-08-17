@@ -13,26 +13,14 @@ const personAge = document.getElementById("age");
 addBtn.onclick = addPerson;
 calcBtn.onclick = calcStats;
 
+const ages = document.createElement('div');
 function Person(id, firstName, lastName, age){
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.age = +age;
 }
-
 function addPerson() {
-
-
-
-    let text = personFirstName.value;
-    let pattern = /[a-z, A-Z]/g;
-    if(text.match(pattern))
-    {
-        alert("!!!!")
-    }
-
-
-
 
     const index = findPersonId(persons, personId.value)
     if (index === -1) {
@@ -48,11 +36,17 @@ function addPerson() {
     Last name: ${person.lastName}, Age: ${person.age}`;
 
     const errorMessage =  validatePerson();
+    const warningMessage = checkInputText();
     if (errorMessage !== "") {
         alert(errorMessage);
-    } else {
-        personsList.appendChild(ListOfPersons);
-        persons.push(person);
+    }
+    else {
+        if(warningMessage !== "") {
+            alert(warningMessage);
+        } else {
+            persons.push(person);
+            personsList.appendChild(ListOfPersons);
+        }
     }
 
     } else {
@@ -72,11 +66,23 @@ function validatePerson() {
     else if(personAge.value.length === 0)
         errorMessage = "Please fill the age";
 
-
     return errorMessage;
 }
 
+function checkInputText() {
 
+    let warningMessage;
+    let text1 = personFirstName.value;
+    let text2 = personLastName.value;
+    let pattern = /^[a-zA-Z]*$/;
+
+    if(text1.match(pattern) && text2.match(pattern))  {
+        warningMessage = "";
+    } else {
+        warningMessage = "Use only A-Z, a-z letters to fill the First name and Last name fields";
+    }
+    return warningMessage;
+}
 function findPersonId(persons, id) {
     for (let i = 0; i < persons.length; i++) {
         if (persons[i].id === id) {
@@ -85,8 +91,6 @@ function findPersonId(persons, id) {
     }
     return -1;
 }
-
-
 function calcStats() {
     let minAge = 0;
     let maxAge = 0;
@@ -106,12 +110,7 @@ function calcStats() {
         return accum;
     }, 0)
 
-    aveAge = Math.trunc( sum / persons.length)
-
-    const ages = document.createElement('div');
+    aveAge = Math.trunc( sum / persons.length);
     ages.innerHTML = `Min age: ${minAge} Max age: ${maxAge} Average age: ${aveAge}`
     statistic.appendChild(ages);
 }
-
-
-
